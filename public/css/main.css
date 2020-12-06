@@ -1,0 +1,7 @@
+:root {
+  --yellow: #f3ce13
+}
+
+.bg-yellow {
+  background-color: var(--yellow);
+}

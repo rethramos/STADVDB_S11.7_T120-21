@@ -1,11 +1,16 @@
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
+const hbs = require('express-handlebars');
 
-require('dotenv').config()
+require('dotenv').config();
 
-app.get('/', (req, res) => {
-  res.send('Hello world');
-})
+app.engine('hbs', hbs({ extname: 'hbs', defaultLayout: 'main' }));
+app.set('view engine', 'hbs');
+
+app.use(express.static('public'));
+
+// ROUTES
+require('./routes/_index').forEach(route => require(`./routes/${route}`)(app));
 
 app.listen(PORT, () => console.log(`App listening at port ${PORT}`));
