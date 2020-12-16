@@ -1,5 +1,5 @@
 {
-  "name": "STADVDB_TeamLAG_T120-21",
+  "name": "STADVDB_S11.7_T120-21",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rethramos/STADVDB_TeamLAG_T120-21.git"
+    "url": "git+https://github.com/rethramos/STADVDB_S11.7_T120-21.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/rethramos/STADVDB_TeamLAG_T120-21/issues"
+    "url": "https://github.com/rethramos/STADVDB_S11.7_T120-21/issues"
   },
-  "homepage": "https://github.com/rethramos/STADVDB_TeamLAG_T120-21#readme",
+  "homepage": "https://github.com/rethramos/STADVDB_S11.7_T120-21#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
