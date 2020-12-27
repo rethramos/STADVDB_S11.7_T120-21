@@ -10,6 +10,8 @@ app.set('view engine', 'hbs');
 
 app.use(express.static('public'));
 
+app.use(express.urlencoded({ extended: true }));
+
 // ROUTES
 require('./routes/_index').forEach(route => require(`./routes/${route}`)(app));
 

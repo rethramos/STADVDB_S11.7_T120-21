@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    districts: `./src/js/districts.js`,
+    'districts-unemployment-rate': `./src/js/pages/districts-unemployment-rate.js`,
   },
   output: {
     filename: '[name].bundle.js',
