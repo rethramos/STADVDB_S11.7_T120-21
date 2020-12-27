@@ -1,6 +1,6 @@
-<h1 class="mb-4">Average Unemployment Rate</h1>
+<h1 class="mb-4">{{title}}</h1>
 
-<form method="GET" action="/api/unemployment-rate" id="form-region">
+<form method="GET" action="/api/unemployment-rate" id="form-avg-unemployment-rate">
   <div class="input-group mb-4">
     <input type="search" name="region" placeholder="Enter a region, or a comma-separated string of regions..."
       class="form-control" id="region">
@@ -11,7 +11,7 @@
 
 </form>
 
-<div id="unemployment-rate-table"></div>
+<div id="unemployment-rate-table" class="d-none"></div>
 <h3 class="text-center d-none" id="no-records">No records found</h3>
 
 <script src="/js/commons.bundle.js"></script>

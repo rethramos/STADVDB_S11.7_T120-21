@@ -1,9 +1,9 @@
 const express = require('express');
-const { getIndex } = require('../controllers/index-controller');
+const { renderIndex } = require('../controllers/index-controller');
 const pool = require('../models/db');
 const router = express.Router();
 
-router.get('/', getIndex);
+router.get('/', renderIndex);
 
 module.exports = app => {
   app.use('/', router);

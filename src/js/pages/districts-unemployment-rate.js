@@ -9,7 +9,7 @@ const unemploymentRateTable = createTable(`#${unemploymentRateContainer.id}`, {
   ajaxURL: '/api/unemployment-rate',
 });
 
-document.getElementById('form-region').onsubmit = e => {
+document.getElementById('form-avg-unemployment-rate').onsubmit = e => {
   e.preventDefault();
 
   let region = document.getElementById('region').value;
