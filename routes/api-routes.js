@@ -4,6 +4,7 @@ const {
   getSalary,
   getCommittedCrimes,
   getDistrictNames,
+  getFinishedContracts,
 } = require('../controllers/api-controller');
 
 const router = express.Router();
@@ -11,6 +12,8 @@ const router = express.Router();
 router.get('/unemployment-rate', getUnemploymentRate);
 router.get('/salary', getSalary);
 router.get('/committed-crimes', getCommittedCrimes);
+
+router.get('/finished-contracts', getFinishedContracts);
 
 // HELPER ROUTES -----------------------------------------
 

@@ -9,7 +9,7 @@ const noRecordsFound = document.getElementById('no-records');
 const committedCrimesTable = createTable(`#${committedCrimesContainer.id}`, {
   ajaxURL: '/api/committed-crimes',
   pagination: 'local',
-  paginationSize: 10
+  paginationSize: 10,
 });
 
 fetch('/api/districts')

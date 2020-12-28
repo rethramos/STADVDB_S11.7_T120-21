@@ -1,5 +1,7 @@
 const pool = require('../models/db');
 
+// DISTRICTS CONTROLLERS -----------------------------------------
+
 exports.getUnemploymentRate = (req, res) => {
   let region = req.query.region
     ? req.query.region.split(',').map(r => r.trim())
@@ -50,6 +52,26 @@ exports.getCommittedCrimes = (req, res) => {
   `;
 
   pool.query(QUERY, [district], (err, results, fields) => {
+    if (err) throw err;
+    res.send(results);
+  });
+};
+
+// ACCOUNTS CONTROLLERS -----------------------------------------
+
+exports.getFinishedContracts = (req, res) => {
+  const SQL_COMMENT = '-- ';
+  let account_id = req.query.account_id;
+
+  const QUERY = `
+  SELECT a.account_id, COUNT(l.status) AS "Finished Contracts"
+  FROM financial.loan as l, financial.account as a
+  WHERE l.account_id = a.account_id AND l.status = 'A'
+  GROUP BY a.account_id
+  ${account_id ? '' : SQL_COMMENT}HAVING a.account_id = ?
+  `;
+
+  pool.query(QUERY, [account_id], (err, results, fields) => {
     if (err) throw err;
     res.send(results);
   });
