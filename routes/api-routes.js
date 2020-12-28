@@ -1,9 +1,20 @@
 const express = require('express');
-const { getUnemploymentRate, getSalary } = require('../controllers/api-controller');
+const {
+  getUnemploymentRate,
+  getSalary,
+  getCommittedCrimes,
+  getDistrictNames,
+} = require('../controllers/api-controller');
+
 const router = express.Router();
 
 router.get('/unemployment-rate', getUnemploymentRate);
 router.get('/salary', getSalary);
+router.get('/committed-crimes', getCommittedCrimes);
+
+// HELPER ROUTES -----------------------------------------
+
+router.get('/districts', getDistrictNames);
 
 module.exports = app => {
   app.use('/api', router);

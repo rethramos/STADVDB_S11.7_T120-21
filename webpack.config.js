@@ -4,6 +4,7 @@ module.exports = {
   entry: {
     'districts-unemployment-rate': `./src/js/pages/districts-unemployment-rate.js`,
     'districts-salary': `./src/js/pages/districts-salary.js`,
+    'districts-committed-crimes': `./src/js/pages/districts-committed-crimes.js`,
   },
   output: {
     filename: '[name].bundle.js',

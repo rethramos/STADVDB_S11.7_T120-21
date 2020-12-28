@@ -35,3 +35,37 @@ exports.getSalary = (req, res) => {
     res.send(results);
   });
 };
+
+exports.getCommittedCrimes = (req, res) => {
+  const SQL_COMMENT = '-- ';
+  let district = req.query.district
+    ? req.query.district.split(',').map(d => d.trim())
+    : '';
+
+  const QUERY = `
+  SELECT A2 as "District", SUM(A15 + A16)  / 2 as "Average Crime"
+  FROM district
+  ${req.query.district ? '' : SQL_COMMENT}WHERE A2 = ?
+  GROUP BY A2
+  `;
+
+  pool.query(QUERY, [district], (err, results, fields) => {
+    if (err) throw err;
+    res.send(results);
+  });
+};
+
+// HELPER CONTROLLERS -----------------------------------------
+
+exports.getDistrictNames = (req, res) => {
+  const QUERY = `
+  SELECT A2
+  FROM district
+  ORDER BY A2
+  `;
+
+  pool.query(QUERY, [], (err, results, fields) => {
+    if (err) throw err;
+    res.send(results.map(result => result.A2));
+  });
+};
