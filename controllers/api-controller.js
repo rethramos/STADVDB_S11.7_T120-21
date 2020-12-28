@@ -1,5 +1,7 @@
 const pool = require('../models/db');
 
+const SQL_COMMENT = '-- ';
+
 // DISTRICTS CONTROLLERS -----------------------------------------
 
 exports.getUnemploymentRate = (req, res) => {
@@ -10,7 +12,7 @@ exports.getUnemploymentRate = (req, res) => {
   const QUERY = `
   SELECT A3 as Region, SUM(A12 + A13) / 2 as 'Average Unemployment Rate'
   FROM district
-  WHERE A3 IN (?)
+  ${region ? '' : SQL_COMMENT}WHERE A3 IN (?)
   GROUP BY Region
   `;
 
@@ -28,7 +30,7 @@ exports.getSalary = (req, res) => {
   const QUERY = `
   SELECT A3 as Region, AVG (A11) as 'Average Salary'
   FROM district
-  WHERE A3 IN (?)
+  ${region ? '' : SQL_COMMENT}WHERE A3 IN (?)
   GROUP BY Region
   `;
 
@@ -39,7 +41,6 @@ exports.getSalary = (req, res) => {
 };
 
 exports.getCommittedCrimes = (req, res) => {
-  const SQL_COMMENT = '-- ';
   let district = req.query.district
     ? req.query.district.split(',').map(d => d.trim())
     : '';
@@ -47,7 +48,7 @@ exports.getCommittedCrimes = (req, res) => {
   const QUERY = `
   SELECT A2 as "District", SUM(A15 + A16)  / 2 as "Average Crime"
   FROM district
-  ${req.query.district ? '' : SQL_COMMENT}WHERE A2 = ?
+  ${district ? '' : SQL_COMMENT}WHERE A2 = ?
   GROUP BY A2
   `;
 
@@ -60,7 +61,6 @@ exports.getCommittedCrimes = (req, res) => {
 // ACCOUNTS CONTROLLERS -----------------------------------------
 
 exports.getFinishedContracts = (req, res) => {
-  const SQL_COMMENT = '-- ';
   let account_id = req.query.account_id;
 
   const QUERY = `
