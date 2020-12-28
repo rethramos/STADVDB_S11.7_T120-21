@@ -6,7 +6,7 @@ exports.getUnemploymentRate = (req, res) => {
     : '';
 
   const QUERY = `
-  SELECT A3 as Region, AVG(A12 + A13) as 'Average Unemployment Rate'
+  SELECT A3 as Region, SUM(A12 + A13) / 2 as 'Average Unemployment Rate'
   FROM district
   WHERE A3 IN (?)
   GROUP BY Region
@@ -19,8 +19,6 @@ exports.getUnemploymentRate = (req, res) => {
 };
 
 exports.getSalary = (req, res) => {
-  console.log(req.query);
-
   let region = req.query.region
     ? req.query.region.split(',').map(r => r.trim())
     : '';
