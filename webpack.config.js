@@ -3,6 +3,7 @@ const path = require('path');
 module.exports = {
   entry: {
     'districts-unemployment-rate': `./src/js/pages/districts-unemployment-rate.js`,
+    'districts-salary': `./src/js/pages/districts-salary.js`,
   },
   output: {
     filename: '[name].bundle.js',
