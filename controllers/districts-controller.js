@@ -7,3 +7,9 @@ exports.renderUnemploymentRate = (req, res) => {
 exports.renderSalary = (req, res) => {
   res.render('districts-salary', { title: 'Salary per Region' });
 };
+
+exports.renderCommittedCrimes = (req, res) => {
+  res.render('districts-commited-crimes', {
+    title: 'Average Committed Crimes',
+  });
+};
