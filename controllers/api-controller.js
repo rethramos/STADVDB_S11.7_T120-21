@@ -113,7 +113,7 @@ exports.getLoanCount = (req, res) => {
   });
 };
 
-// LOANS CONTROLLERS -----------------------------------------
+// TRANSACTIONS CONTROLLERS -----------------------------------------
 
 exports.getRegionTransactions = (req, res) => {
   let k_symbol = req.query.k_symbol;
@@ -128,6 +128,33 @@ exports.getRegionTransactions = (req, res) => {
   `;
 
   pool.query(QUERY, [k_symbol], (err, results, fields) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send({ msg: 'Server error. Please try again.' });
+    } else res.send(results);
+  });
+};
+
+// TRANSACTIONS CONTROLLERS -----------------------------------------
+
+exports.getIssuance = (req, res) => {
+  let { type, threshold } = req.query;
+
+  const QUERY = `
+  SELECT A3 as "Region Name", COUNT(a.account_id) as "Total"
+  FROM financial.card as c
+  INNER JOIN financial.disp as d1
+  ON c.disp_id = d1.disp_id
+  INNER JOIN financial.account as a
+  ON d1.account_id = a.account_id
+  INNER JOIN financial.district as d2
+  ON a.district_id = d2.district_id
+  ${type ? '' : SQL_COMMENT}WHERE c.type = ?
+  GROUP BY A3
+  ${threshold ? '' : SQL_COMMENT}HAVING COUNT(a.account_id) >= ?
+  `;
+
+  pool.query(QUERY, [type, threshold], (err, results, fields) => {
     if (err) {
       console.log(err);
       res.status(500).send({ msg: 'Server error. Please try again.' });

@@ -8,6 +8,7 @@ const {
   getAccountDistrict,
   getLoanCount,
   getRegionTransactions,
+  getIssuance,
 } = require('../controllers/api-controller');
 
 const router = express.Router();
@@ -27,9 +28,13 @@ router.get('/account-district', getAccountDistrict);
 
 router.get('/loan-count', getLoanCount);
 
-// HELPER ROUTES -----------------------------------------
+// TRANSACTIONS ROUTES -----------------------------------------
 
 router.get('/region-transactions', getRegionTransactions);
+
+// CARDS ROUTES -----------------------------------------
+
+router.get('/issuance', getIssuance);
 
 // HELPER ROUTES -----------------------------------------
 

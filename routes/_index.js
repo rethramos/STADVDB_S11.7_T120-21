@@ -1,8 +1,9 @@
 module.exports = [
+  'api-routes',
   'index-routes',
   'districts-routes',
   'accounts-routes',
   'loans-routes',
-  'api-routes',
   'transactions-routes',
+  'cards-routes',
 ];
