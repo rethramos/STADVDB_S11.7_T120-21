@@ -77,6 +77,23 @@ exports.getFinishedContracts = (req, res) => {
   });
 };
 
+exports.getAccountDistrict = (req, res) => {
+  let account_id = req.query.account_id;
+
+  const QUERY = `
+  SELECT a.account_id, A2 as "District name"
+  FROM district as d
+  INNER JOIN account as a
+  ON d.district_id = a.district_id
+  ${account_id ? '' : SQL_COMMENT}WHERE account_id = ?
+  `;
+
+  pool.query(QUERY, [account_id], (err, results, fields) => {
+    if (err) throw err;
+    res.send(results);
+  });
+};
+
 // HELPER CONTROLLERS -----------------------------------------
 
 exports.getDistrictNames = (req, res) => {

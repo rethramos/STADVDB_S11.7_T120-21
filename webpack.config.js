@@ -6,6 +6,7 @@ module.exports = {
     'districts-salary': `./src/js/pages/districts-salary.js`,
     'districts-committed-crimes': `./src/js/pages/districts-committed-crimes.js`,
     'accounts-finished-contracts': `./src/js/pages/accounts-finished-contracts.js`,
+    'accounts-account-district': `./src/js/pages/accounts-account-district.js`,
   },
   output: {
     filename: '[name].bundle.js',
