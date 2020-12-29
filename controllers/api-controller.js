@@ -128,8 +128,10 @@ exports.getRegionTransactions = (req, res) => {
   `;
 
   pool.query(QUERY, [k_symbol], (err, results, fields) => {
-    if (err) throw err;
-    res.send(results);
+    if (err) {
+      console.log(err);
+      res.status(500).send({ msg: 'Server error. Please try again.' });
+    } else res.send(results);
   });
 };
 
