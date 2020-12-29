@@ -15,6 +15,9 @@ const committedCrimesTable = createTable(`#${committedCrimesContainer.id}`, {
 fetch('/api/districts')
   .then(response => response.json())
   .then(data => {
+
+    districtSelect.innerHTML = '';
+    
     data.forEach(d => {
       let option = document.createElement('option');
       let text = document.createTextNode(d);
