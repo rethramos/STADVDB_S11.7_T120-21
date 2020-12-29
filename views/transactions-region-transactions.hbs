@@ -1,0 +1,27 @@
+<h1 class="mb-4">{{title}}</h1>
+
+<form method="GET" action="/api/region-transactions" id="form-agg-region-transactions">
+  <div class="row align-items-end">
+    <div class="col-12">
+      <div class="form-group">
+        <label for="k_symbol">Transaction type</label>
+        <select class="form-control" id="k_symbol" name="k_symbol">
+          <option value="POJISTNE">Insurance Payment</option>
+          <option value="SLUZBY">Payment for Statement</option>
+          <option value="UROK">Interest Credited</option>
+          <option value="SANKC. UROK">Sanction Interest if Negative Balance</option>
+          <option value="SIPO">Household</option>
+          <option value="DUCHOD">Old-Age Pension</option>
+          <option value="UVER">Loan Payment</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+</form>
+
+<div id="region-transactions-table"></div>
+<h3 class="text-center d-none" id="no-records">No records found</h3>
+
+<script src="/js/commons.bundle.js"></script>
+<script src="/js/transactions-region-transactions.bundle.js"></script>

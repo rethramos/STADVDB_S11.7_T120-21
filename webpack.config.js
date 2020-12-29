@@ -8,6 +8,7 @@ module.exports = {
     'accounts-finished-contracts': `./src/js/pages/accounts-finished-contracts.js`,
     'accounts-account-district': `./src/js/pages/accounts-account-district.js`,
     'loans-loan-count': `./src/js/pages/loans-loan-count.js`,
+    'transactions-region-transactions': `./src/js/pages/transactions-region-transactions`,
   },
   output: {
     filename: '[name].bundle.js',

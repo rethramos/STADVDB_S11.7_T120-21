@@ -98,7 +98,7 @@ exports.getAccountDistrict = (req, res) => {
 
 exports.getLoanCount = (req, res) => {
   let status = req.query.status;
-  
+
   const QUERY = `
   SELECT A3 as "Region Name", COUNT(l.loan_id) AS "Loan Count"
   FROM financial.loan as l, financial.account as a, financial.district as d
@@ -108,6 +108,26 @@ exports.getLoanCount = (req, res) => {
   `;
 
   pool.query(QUERY, [status], (err, results, fields) => {
+    if (err) throw err;
+    res.send(results);
+  });
+};
+
+// LOANS CONTROLLERS -----------------------------------------
+
+exports.getRegionTransactions = (req, res) => {
+  let k_symbol = req.query.k_symbol;
+
+  const QUERY = `
+  SELECT A3 AS "Region Name", COUNT(t.trans_id) AS "Transaction Count", SUM(amount) AS "Total Amount"
+  FROM financial.trans as t, financial.account as a, financial.district as d
+  WHERE t.account_id = a.account_id AND a.district_id = d.district_id
+  ${k_symbol ? '' : SQL_COMMENT}AND t.k_symbol = ?
+  GROUP BY A3
+  ORDER BY COUNT(t.trans_id)
+  `;
+
+  pool.query(QUERY, [k_symbol], (err, results, fields) => {
     if (err) throw err;
     res.send(results);
   });
