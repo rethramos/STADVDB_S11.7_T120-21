@@ -4,19 +4,31 @@ const ttypeSelect = document.getElementById('k_symbol');
 const regionTransactionsContainer = document.getElementById(
   'region-transactions-table',
 );
-const noRecordsFound = document.getElementById('no-records');
+const progressText = document.getElementById('progress-text');
 
 const regionTransactionsTable = createTable(
   `#${regionTransactionsContainer.id}`,
   {
+    ajaxRequesting: (url, params) => {
+      progressText.innerHTML = 'Loading...';
+    },
     ajaxResponse: (url, params, response) => {
       return response;
     },
+    ajaxError: (xhr, textStatus, errorThrown) => {
+      regionTransactionsContainer.classList.add('d-none');
+      progressText.innerHTML = xhr.statusText;
+      progressText.classList.remove('d-none');
+    },
     dataLoaded: data => {
-      const force = !data.length;
-
-      regionTransactionsContainer.classList.toggle('d-none', force);
-      noRecordsFound.classList.toggle('d-none', !force);
+      if (data.length) {
+        regionTransactionsContainer.classList.remove('d-none');
+        progressText.classList.add('d-none');
+      } else {
+        regionTransactionsContainer.classList.add('d-none');
+        progressText.innerHTML = 'No records found';
+        progressText.classList.remove('d-none');
+      }
     },
   },
 );
