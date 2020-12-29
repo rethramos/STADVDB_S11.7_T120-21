@@ -9,16 +9,14 @@ const noRecordsFound = document.getElementById('no-records');
 const regionTransactionsTable = createTable(
   `#${regionTransactionsContainer.id}`,
   {
-    pagination: 'local',
-    paginationSize: 10,
-
     ajaxResponse: (url, params, response) => {
-      const force = !response.length;
+      return response;
+    },
+    dataLoaded: data => {
+      const force = !data.length;
 
       regionTransactionsContainer.classList.toggle('d-none', force);
       noRecordsFound.classList.toggle('d-none', !force);
-
-      return response;
     },
   },
 );
