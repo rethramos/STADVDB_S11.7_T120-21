@@ -1,1 +1,7 @@
-module.exports = ['index-routes', 'districts-routes', 'accounts-routes', 'api-routes'];
+module.exports = [
+  'index-routes',
+  'districts-routes',
+  'accounts-routes',
+  'loans-routes',
+  'api-routes',
+];

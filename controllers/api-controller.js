@@ -94,6 +94,25 @@ exports.getAccountDistrict = (req, res) => {
   });
 };
 
+// LOANS CONTROLLERS -----------------------------------------
+
+exports.getLoanCount = (req, res) => {
+  let status = req.query.status;
+  
+  const QUERY = `
+  SELECT A3 as "Region Name", COUNT(l.loan_id) AS "Loan Count"
+  FROM financial.loan as l, financial.account as a, financial.district as d
+  WHERE l.account_id = a.account_id AND d.district_id = a.district_id
+  ${status ? '' : SQL_COMMENT}AND l.status = ?
+  GROUP BY A3
+  `;
+
+  pool.query(QUERY, [status], (err, results, fields) => {
+    if (err) throw err;
+    res.send(results);
+  });
+};
+
 // HELPER CONTROLLERS -----------------------------------------
 
 exports.getDistrictNames = (req, res) => {
