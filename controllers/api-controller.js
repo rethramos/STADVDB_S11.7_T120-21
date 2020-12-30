@@ -17,9 +17,13 @@ exports.getUnemploymentRate = (req, res) => {
   GROUP BY Region
   `;
 
+  timer.start();
   pool.query(QUERY, [region], (err, results, fields) => {
-    if (err) throw err;
-    res.send(results);
+    timer.end();
+    if (err) {
+      console.log(err);
+      res.status(500).send({ msg: 'Server error. Please try again.' });
+    } else res.send({ results, duration: timer.getTimeDiff() });
   });
 };
 
