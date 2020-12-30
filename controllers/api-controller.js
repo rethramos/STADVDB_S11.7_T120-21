@@ -94,9 +94,13 @@ exports.getAccountDistrict = (req, res) => {
   ${account_id ? '' : SQL_COMMENT}WHERE account_id = ?
   `;
 
+  timer.start();
   pool.query(QUERY, [account_id], (err, results, fields) => {
-    if (err) throw err;
-    res.send(results);
+    timer.end();
+    if (err) {
+      console.log(err);
+      res.status(500).send({ msg: 'Server error. Please try again.' });
+    } else res.send({results, duration: timer.getTimeDiff()});
   });
 };
 
@@ -141,7 +145,7 @@ exports.getRegionTransactions = (req, res) => {
   });
 };
 
-// TRANSACTIONS CONTROLLERS -----------------------------------------
+// CARDS CONTROLLERS -----------------------------------------
 
 exports.getIssuance = (req, res) => {
   let { type, threshold } = req.query;
