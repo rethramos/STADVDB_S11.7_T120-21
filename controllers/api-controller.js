@@ -141,7 +141,7 @@ exports.getIssuance = (req, res) => {
   let { type, threshold } = req.query;
 
   const QUERY = `
-  SELECT A3 as "Region Name", COUNT(a.account_id) as "Total"
+  SELECT A3 as "Region Name", COUNT(a.account_id) as "Account Count"
   FROM financial.card as c
   INNER JOIN financial.disp as d1
   ON c.disp_id = d1.disp_id
