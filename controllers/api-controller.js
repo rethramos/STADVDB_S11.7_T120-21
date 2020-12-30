@@ -170,11 +170,13 @@ exports.getIssuance = (req, res) => {
   ${threshold ? '' : SQL_COMMENT}HAVING COUNT(a.account_id) >= ?
   `;
 
+  timer.start();
   pool.query(QUERY, [type, threshold], (err, results, fields) => {
+    timer.end();
     if (err) {
       console.log(err);
       res.status(500).send({ msg: 'Server error. Please try again.' });
-    } else res.send(results);
+    } else res.send({ results, duration: timer.getTimeDiff() });
   });
 };
 
