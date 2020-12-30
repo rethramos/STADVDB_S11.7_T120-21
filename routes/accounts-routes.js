@@ -1,11 +1,12 @@
 const express = require('express');
 const {
-  renderFinishedContracts, renderAccountDistrict,
+  renderAccountDistrict,
+  renderContractStatus,
 } = require('../controllers/accounts-controller');
 
 const router = express.Router();
 
-router.get('/finished-contracts', renderFinishedContracts);
+router.get('/finished-contracts', renderContractStatus);
 
 router.get('/account-district', renderAccountDistrict);
 

@@ -4,11 +4,11 @@ const {
   getSalary,
   getCommittedCrimes,
   getDistrictNames,
-  getFinishedContracts,
   getAccountDistrict,
   getLoanCount,
   getRegionTransactions,
   getIssuance,
+  getContractStatus,
 } = require('../controllers/api-controller');
 
 const router = express.Router();
@@ -21,7 +21,7 @@ router.get('/committed-crimes', getCommittedCrimes);
 
 // ACCOUNTS ROUTES -----------------------------------------
 
-router.get('/finished-contracts', getFinishedContracts);
+router.get('/contract-status', getContractStatus);
 router.get('/account-district', getAccountDistrict);
 
 // LOANS ROUTES -----------------------------------------

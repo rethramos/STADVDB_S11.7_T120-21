@@ -1,5 +1,5 @@
-exports.renderFinishedContracts = (req, res) => {
-  res.render('accounts-finished-contracts', { title: 'Finished Contracts' });
+exports.renderContractStatus = (req, res) => {
+  res.render('accounts-contract-status', { title: 'Contract Status' });
 };
 
 exports.renderAccountDistrict = (req, res) => {

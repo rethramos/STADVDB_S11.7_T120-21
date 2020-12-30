@@ -1,6 +1,6 @@
 <h1 class="mb-4">{{title}}</h1>
 
-<form method="GET" action="/api/finished-contracts" id="form-cnt-finished-contracts">
+<form method="GET" action="/api/contract-status" id="form-cnt-contract-status">
   <div class="input-group mb-4">
     <input type="search" name="account_id" placeholder="Enter an Account ID..."
       class="form-control" id="account_id">
@@ -10,8 +10,8 @@
   </div>
 </form>
 
-<div id="finished-contracts-table"></div>
+<div id="contract-status-table"></div>
 <h3 class="text-center d-none" id="no-records">No records found</h3>
 
 <script src="/js/commons.bundle.js"></script>
-<script src="/js/accounts-finished-contracts.bundle.js"></script>
+<script src="/js/accounts-contract-status.bundle.js"></script>

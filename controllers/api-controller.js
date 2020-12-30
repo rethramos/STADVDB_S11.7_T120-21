@@ -60,7 +60,7 @@ exports.getCommittedCrimes = (req, res) => {
 
 // ACCOUNTS CONTROLLERS -----------------------------------------
 
-exports.getFinishedContracts = (req, res) => {
+exports.getContractStatus = (req, res) => {
   let account_id = req.query.account_id;
 
   const QUERY = `

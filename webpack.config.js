@@ -5,7 +5,7 @@ module.exports = {
     'districts-unemployment-rate': `./src/js/pages/districts-unemployment-rate.js`,
     'districts-salary': `./src/js/pages/districts-salary.js`,
     'districts-committed-crimes': `./src/js/pages/districts-committed-crimes.js`,
-    'accounts-finished-contracts': `./src/js/pages/accounts-finished-contracts.js`,
+    'accounts-contract-status': `./src/js/pages/accounts-contract-status.js`,
     'accounts-account-district': `./src/js/pages/accounts-account-district.js`,
     'loans-loan-count': `./src/js/pages/loans-loan-count.js`,
     'transactions-region-transactions': `./src/js/pages/transactions-region-transactions`,
