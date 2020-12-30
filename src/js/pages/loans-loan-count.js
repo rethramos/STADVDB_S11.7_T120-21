@@ -1,23 +1,45 @@
 import createTable from '../helpers/table-helper';
 
+const queryTimeText = document.getElementById('query-time-text');
+const queryTimeVal = document.getElementById('query-time-val');
 const statusSelect = document.getElementById('status');
 const loanCountContainer = document.getElementById('loan-count-table');
-const noRecordsFound = document.getElementById('no-records');
+const progressText = document.getElementById('no-records');
 const loanCountTable = createTable(`#${loanCountContainer.id}`, {
-  // ajaxURL: '/api/loan-count',
   pagination: 'local',
   paginationSize: 10,
+  ajaxRequesting: (url, params) => {
+    queryTimeText.classList.add('d-none');
+    progressText.innerHTML = 'Loading...';
+  },
+  ajaxResponse: (url, params, response) => {
+    queryTimeVal.innerHTML = response.duration;
+    queryTimeText.classList.remove('d-none');
+
+    return response.results;
+  },
+  ajaxError: (xhr, textStatus, errorThrown) => {
+    queryTimeText.classList.add('d-none');
+    loanCountContainer.classList.add('d-none');
+    progressText.innerHTML = xhr.statusText;
+    progressText.classList.remove('d-none');
+  },
+  dataLoaded: data => {
+    if (data.length) {
+      queryTimeText.classList.remove('d-none');
+      loanCountContainer.classList.remove('d-none');
+      progressText.classList.add('d-none');
+    } else {
+      loanCountContainer.classList.add('d-none');
+      progressText.innerHTML = 'No records found';
+      progressText.classList.remove('d-none');
+    }
+  },
 });
 
-loanCountTable.setData('/api/loan-count', { status: 'A' });
+loanCountTable.setData('/api/loan-count', { status: statusSelect.value });
 
 statusSelect.onchange = e => {
   const status = statusSelect.value;
-  console.log(status);
-  loanCountTable.setData(loanCountTable.getAjaxUrl(), { status }).then(() => {
-    const force = !loanCountTable.getDataCount();
-
-    loanCountContainer.classList.toggle('d-none', force);
-    noRecordsFound.classList.toggle('d-none', !force);
-  });
+  loanCountTable.setData(loanCountTable.getAjaxUrl(), { status });
 };

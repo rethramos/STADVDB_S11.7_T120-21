@@ -47,8 +47,6 @@ accountDistrictTable.setData('/api/account-district', {
 document.getElementById('form-fnd-account-district').onsubmit = e => {
   e.preventDefault();
 
-  // let account_id = accountIDInput.value;
-
   accountDistrictTable.setData(accountDistrictTable.getAjaxUrl(), {
     account_id: accountIDInput.value,
   });
