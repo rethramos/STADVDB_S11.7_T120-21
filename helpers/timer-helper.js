@@ -9,6 +9,10 @@ const timer = {
     endTime = Date.now();
     timeDiff = endTime - startTime;
   },
+
+  getTimeDiff() {
+    return timeDiff;
+  },
 };
 
 module.exports = timer;

@@ -1,3 +1,4 @@
+const timer = require('../helpers/timer-helper');
 const pool = require('../models/db');
 
 const SQL_COMMENT = '-- ';
@@ -72,11 +73,13 @@ exports.getContractStatus = (req, res) => {
   ${account_id ? '' : SQL_COMMENT}HAVING a.account_id = ?
   `;
 
+  timer.start();
   pool.query(QUERY, [status, account_id], (err, results, fields) => {
+    timer.end();
     if (err) {
       console.log(err);
       res.status(500).send({ msg: 'Server error. Please try again.' });
-    } else res.send(results);
+    } else res.send({ results, duration: timer.getTimeDiff() });
   });
 };
 
