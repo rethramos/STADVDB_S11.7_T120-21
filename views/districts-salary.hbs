@@ -2,7 +2,7 @@
 
 <form method="GET" action="/api/salary" id="form-avg-salary">
   <div class="input-group mb-4">
-    <input type="search" name="region" placeholder="Enter a region, or a comma-separated string of regions..."
+    <input type="text" name="region" placeholder="Enter a region, or a comma-separated string of regions..."
       class="form-control" id="region">
     <div class="input-group-append">
       <button type="submit" class="btn bg-yellow">Search</button>
@@ -10,8 +10,9 @@
   </div>
 </form>
 
+<p class="d-none" id="query-time-text">Query took <span id="query-time-val"></span> ms</p>
 <div id="salary-table"></div>
-<h3 class="text-center d-none" id="no-records">No records found</h3>
+<h3 class="text-center" id="progress-text"></h3>
 
 <script src="/js/commons.bundle.js"></script>
 <script src="/js/districts-salary.bundle.js"></script>
