@@ -1,17 +1,32 @@
 <h1 class="mb-4">{{title}}</h1>
 
 <form method="GET" action="/api/contract-status" id="form-cnt-contract-status">
-  <div class="input-group mb-4">
-    <input type="search" name="account_id" placeholder="Enter an Account ID..."
-      class="form-control" id="account_id">
-    <div class="input-group-append">
-      <button type="submit" class="btn bg-yellow">Search</button>
+  <div class="row">
+    <div class="col-6">
+      <div class="form-group">
+        <label for="account_id">Account ID</label>
+        <input type="text" name="account_id" placeholder="Enter an Account ID..." class="form-control"
+          id="account_id">
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-group">
+        <label for="status">Loan Status</label>
+        <select name="status" class="form-control" id="status">
+          <option value="">All</option>
+          <option value="A">Fully paid</option>
+          <option value="B">Not paid</option>
+          <option value="C">Running contract</option>
+          <option value="D">In debt</option>
+        </select>
+      </div>
     </div>
   </div>
+
 </form>
 
 <div id="contract-status-table"></div>
-<h3 class="text-center d-none" id="no-records">No records found</h3>
+<h3 class="text-center" id="progress-text"></h3>
 
 <script src="/js/commons.bundle.js"></script>
 <script src="/js/accounts-contract-status.bundle.js"></script>

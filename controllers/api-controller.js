@@ -61,19 +61,22 @@ exports.getCommittedCrimes = (req, res) => {
 // ACCOUNTS CONTROLLERS -----------------------------------------
 
 exports.getContractStatus = (req, res) => {
-  let account_id = req.query.account_id;
+  let { account_id, status } = req.query;
 
   const QUERY = `
-  SELECT a.account_id, COUNT(l.status) AS "Finished Contracts"
+  SELECT a.account_id, COUNT(l.status) AS "Contract Count"
   FROM financial.loan as l, financial.account as a
-  WHERE l.account_id = a.account_id AND l.status = 'A'
+  WHERE l.account_id = a.account_id
+  ${status ? '' : SQL_COMMENT}AND l.status = ?
   GROUP BY a.account_id
   ${account_id ? '' : SQL_COMMENT}HAVING a.account_id = ?
   `;
 
-  pool.query(QUERY, [account_id], (err, results, fields) => {
-    if (err) throw err;
-    res.send(results);
+  pool.query(QUERY, [status, account_id], (err, results, fields) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send({ msg: 'Server error. Please try again.' });
+    } else res.send(results);
   });
 };
 

@@ -1,32 +1,54 @@
 import createTable from '../helpers/table-helper';
 
+const contractStatusForm = document.getElementById('form-cnt-contract-status');
+const accountIDInput = document.getElementById('account_id');
+const statusSelect = document.getElementById('status');
 const contractStatusContainer = document.getElementById(
   'contract-status-table',
 );
-const noRecordsFound = document.getElementById('no-records');
+const progressText = document.getElementById('progress-text');
 
-const contractStatusTable = createTable(
-  `#${contractStatusContainer.id}`,
-  {
-    ajaxURL: '/api/contract-status',
-    pagination: 'local',
-    paginationSize: 10,
+const contractStatusTable = createTable(`#${contractStatusContainer.id}`, {
+  pagination: 'local',
+  paginationSize: 10,
+  ajaxRequesting: (url, params) => {
+    progressText.innerHTML = 'Loading...';
   },
-);
+  ajaxResponse: (url, params, response) => {
+    return response;
+  },
+  ajaxError: (xhr, textStatus, errorThrown) => {
+    contractStatusContainer.classList.add('d-none');
+    progressText.innerHTML = xhr.statusText;
+    progressText.classList.remove('d-none');
+  },
+  dataLoaded: data => {
+    if (data.length) {
+      contractStatusContainer.classList.remove('d-none');
+      progressText.classList.add('d-none');
+    } else {
+      contractStatusContainer.classList.add('d-none');
+      progressText.innerHTML = 'No records found';
+      progressText.classList.remove('d-none');
+    }
+  },
+});
 
-document.getElementById('form-cnt-contract-status').onsubmit = e => {
+contractStatusTable.setData('/api/contract-status', {
+  account_id: accountIDInput.value,
+  status: statusSelect.value,
+});
+
+contractStatusForm.onchange = e => {
+  let account_id = accountIDInput.value;
+  let status = statusSelect.value;
+
+  contractStatusTable.setData(contractStatusTable.getAjaxUrl(), {
+    account_id,
+    status,
+  });
+};
+
+contractStatusForm.onsubmit = e => {
   e.preventDefault();
-
-  let account_id = document.getElementById('account_id').value;
-
-  contractStatusTable
-    .setData(contractStatusTable.getAjaxUrl(), {
-      account_id,
-    })
-    .then(() => {
-      let force = !contractStatusTable.getDataCount();
-
-      contractStatusContainer.classList.toggle('d-none', force);
-      noRecordsFound.classList.toggle('d-none', !force);
-    });
 };
