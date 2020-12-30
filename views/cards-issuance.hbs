@@ -1,0 +1,27 @@
+<h1 class="mb-4">{{title}}</h1>
+
+<div class="row align-items-end">
+  <div class="col-10">
+    <div class="form-group">
+      <label for="type">Card type</label>
+      <select class="form-control" id="type" name="type">
+        <option value="junior">Junior</option>
+        <option value="classic">Classic</option>
+        <option value="gold">Gold</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-2">
+    <div class="form-group">
+      <label for="threshold">Threshold</label>
+      <input type="number" name="threshold" class="form-control" id="threshold" min="1">
+    </div>
+  </div>
+</div>
+
+<p class="d-none" id="query-time-text">Query took <span id="query-time-val"></span> ms</p>
+<div id="issuance-table"></div>
+<h3 class="text-center" id="progress-text"></h3>
+
+<script src="/js/commons.bundle.js"></script>
+<script src="/js/cards-issuance.bundle.js"></script>

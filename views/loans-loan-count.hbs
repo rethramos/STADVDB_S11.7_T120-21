@@ -1,0 +1,23 @@
+<h1 class="mb-4">{{title}}</h1>
+
+<form method="GET" action="/api/loan-count" id="form-cnt-loans">
+  <div class="row align-items-end">
+    <div class="col-12">
+      <div class="form-group">
+        <label for="status">Loan Status</label>
+        <select class="form-control" id="status" name="status">
+          <option value="A">Fully Paid</option>
+          <option value="B">Not Paid</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+</form>
+
+<p class="d-none" id="query-time-text">Query took <span id="query-time-val"></span> ms</p>
+<div id="loan-count-table"></div>
+<h3 class="text-center d-none" id="no-records">No records found</h3>
+
+<script src="/js/commons.bundle.js"></script>
+<script src="/js/loans-loan-count.bundle.js"></script>

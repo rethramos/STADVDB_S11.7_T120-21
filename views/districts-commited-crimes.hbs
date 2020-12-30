@@ -1,0 +1,28 @@
+<h1 class="mb-4">{{title}}</h1>
+
+<form method="GET" action="/api/committed-crimes" id="form-avg-committed-crimes">
+  <div class="row align-items-end">
+    <div class="col-8">
+      <div class="form-group">
+        <label for="district">District</label>
+        <select class="form-control" id="district" name="district">
+          <option value="">Loading options...</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <div class="form-group">
+        <button type="button" class="btn btn-outline-secondary" id="reset-btn">Reset/Select all</button>
+      </div>
+    </div>
+  </div>
+
+</form>
+
+<p class="d-none" id="query-time-text">Query took <span id="query-time-val"></span> ms</p>
+<div id="committed-crimes-table"></div>
+<h3 class="text-center" id="progress-text"></h3>
+
+<script src="/js/commons.bundle.js"></script>
+<script src="/js/districts-committed-crimes.bundle.js"></script>
