@@ -141,11 +141,13 @@ exports.getRegionTransactions = (req, res) => {
   ORDER BY COUNT(t.trans_id)
   `;
 
+  timer.start();
   pool.query(QUERY, [k_symbol], (err, results, fields) => {
+    timer.end();
     if (err) {
       console.log(err);
       res.status(500).send({ msg: 'Server error. Please try again.' });
-    } else res.send(results);
+    } else res.send({ results, duration: timer.getTimeDiff() });
   });
 };
 

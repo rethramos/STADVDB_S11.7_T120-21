@@ -1,5 +1,7 @@
 import createTable from '../helpers/table-helper';
 
+const queryTimeText = document.getElementById('query-time-text');
+const queryTimeVal = document.getElementById('query-time-val');
 const ttypeSelect = document.getElementById('k_symbol');
 const regionTransactionsContainer = document.getElementById(
   'region-transactions-table',
@@ -10,18 +12,24 @@ const regionTransactionsTable = createTable(
   `#${regionTransactionsContainer.id}`,
   {
     ajaxRequesting: (url, params) => {
+      queryTimeText.classList.add('d-none');
       progressText.innerHTML = 'Loading...';
     },
     ajaxResponse: (url, params, response) => {
-      return response;
+      queryTimeVal.innerHTML = response.duration;
+      queryTimeText.classList.remove('d-none');
+
+      return response.results;
     },
     ajaxError: (xhr, textStatus, errorThrown) => {
+      queryTimeText.classList.add('d-none');
       regionTransactionsContainer.classList.add('d-none');
       progressText.innerHTML = xhr.statusText;
       progressText.classList.remove('d-none');
     },
     dataLoaded: data => {
       if (data.length) {
+        queryTimeText.classList.remove('d-none');
         regionTransactionsContainer.classList.remove('d-none');
         progressText.classList.add('d-none');
       } else {
@@ -38,9 +46,7 @@ regionTransactionsTable.setData('/api/region-transactions', {
 });
 
 ttypeSelect.onchange = e => {
-  const k_symbol = ttypeSelect.value;
-
   regionTransactionsTable.setData(regionTransactionsTable.getAjaxUrl(), {
-    k_symbol,
+    k_symbol: ttypeSelect.value,
   });
 };
