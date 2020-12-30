@@ -6,7 +6,7 @@ const {
 
 const router = express.Router();
 
-router.get('/finished-contracts', renderContractStatus);
+router.get('/contract-status', renderContractStatus);
 
 router.get('/account-district', renderAccountDistrict);
 
