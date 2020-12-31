@@ -7,7 +7,7 @@
     "start": "node index.js",
     "build:js": "webpack --config webpack.config.js",
     "build:css": "sass src/scss/main.scss public/css/main.css -s compressed",
-    "build": "npm run build:js"
+    "build": "npm run build:css && npm run build:js"
   },
   "repository": {
     "type": "git",
