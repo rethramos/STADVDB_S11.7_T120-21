@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "build:js": "webpack --config webpack.config.js",
-    "build": "npm run build:js"
+    "build:css": "sass src/scss/main.scss public/css/main.css -s compressed",
+    "build": "npm run build:css && npm run build:js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   },
   "homepage": "https://github.com/rethramos/STADVDB_S11.7_T120-21#readme",
   "dependencies": {
+    "bootstrap": "^4.5.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-handlebars": "^5.2.0",
@@ -31,6 +33,7 @@
     "@babel/preset-env": "^7.12.11",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.0.1",
+    "sass": "^1.32.0",
     "style-loader": "^2.0.0",
     "webpack": "^5.11.0",
     "webpack-cli": "^4.3.0"

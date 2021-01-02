@@ -6,8 +6,6 @@ const statusSelect = document.getElementById('status');
 const loanCountContainer = document.getElementById('loan-count-table');
 const progressText = document.getElementById('no-records');
 const loanCountTable = createTable(`#${loanCountContainer.id}`, {
-  pagination: 'local',
-  paginationSize: 10,
   ajaxRequesting: (url, params) => {
     queryTimeText.classList.add('d-none');
     progressText.innerHTML = 'Loading...';

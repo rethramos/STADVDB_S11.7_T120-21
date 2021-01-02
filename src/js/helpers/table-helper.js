@@ -1,4 +1,3 @@
-import 'tabulator-tables/dist/css/tabulator.min.css';
 import Tabulator from 'tabulator-tables';
 
 const createTable = (elementID, options) => {

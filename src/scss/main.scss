@@ -1,0 +1,33 @@
+$blue-color: #11457e;
+$red-color: #d7141a;
+$light-blue-color: #f3f8fd;
+$dark-blue-color: #010305;
+
+@use "../../node_modules/bootstrap/scss/bootstrap" with (
+  $blue: $blue-color,
+  $red: $red-color,
+  $body-color: $dark-blue-color
+);
+
+@use "../../node_modules/tabulator-tables/src/scss/tabulator_simple.scss" as tabulator with (
+  $headerBackgroundColor: $blue-color,
+  $headerTextColor: $light-blue-color,
+  $sortArrowActive: #9cc5f2,
+  $sortArrowInactive: $light-blue-color,
+  $rowTextColor: $dark-blue-color,
+  $rowHoverBackground: $light-blue-color,
+  $footerActiveColor: $red-color
+);
+
+.tabulator {
+  .tabulator-footer {
+    .tabulator-page {
+      &:not(.disabled) {
+        &:hover {
+          background: $light-blue-color;
+          color: #010305;
+        }
+      }
+    }
+  }
+}
