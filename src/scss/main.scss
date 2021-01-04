@@ -3,7 +3,7 @@ $red-color: #d7141a;
 $light-blue-color: #f3f8fd;
 $dark-blue-color: #010305;
 
-@use "../../node_modules/bootstrap/scss/bootstrap" with (
+@use "../../node_modules/bootstrap/scss/bootstrap" as bootstrap with (
   $blue: $blue-color,
   $red: $red-color,
   $body-color: $dark-blue-color
@@ -29,5 +29,13 @@ $dark-blue-color: #010305;
         }
       }
     }
+  }
+}
+
+.material-icons {
+  cursor: pointer;
+
+  &.clear {
+    color: $red-color;
   }
 }
