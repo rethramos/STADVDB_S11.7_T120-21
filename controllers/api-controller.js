@@ -51,13 +51,13 @@ exports.getSalary = (req, res) => {
 
 exports.getCommittedCrimes = (req, res) => {
   let district = req.query.district
-    ? req.query.district.split(',').map(d => d.trim())
-    : '';
+    ? req.query.district.map(d => d.trim())
+    : null;
 
   const QUERY = `
   SELECT A2 as "District", SUM(A15 + A16)  / 2 as "Average Crime"
   FROM district
-  ${district ? '' : SQL_COMMENT}WHERE A2 = ?
+  ${district ? '' : SQL_COMMENT}WHERE A2 IN (?)
   GROUP BY A2
   `;
 
