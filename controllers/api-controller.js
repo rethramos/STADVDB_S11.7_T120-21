@@ -110,12 +110,14 @@ exports.getAccountDistrict = (req, res) => {
   let { account_id, optimized } = req.query;
 
   const QUERY =
-    optimized == true
+    optimized == 'true'
       ? `
   SELECT a.account_id, A2 as "District name"
-  FROM (SELECT district_id 
-  FROM financial.account 
-  WHERE account_id = <user-input>) as a
+  FROM (
+    SELECT account_id, district_id 
+    FROM financial.account 
+    ${account_id ? '':SQL_COMMENT}WHERE account_id = ?
+  ) as a
   INNER JOIN financial.district as d
   ON d.district_id = a.district_id
   `
