@@ -74,14 +74,26 @@ exports.getCommittedCrimes = (req, res) => {
 // ACCOUNTS CONTROLLERS -----------------------------------------
 
 exports.getContractStatus = (req, res) => {
-  let { account_id, status } = req.query;
+  let { account_id, status, optimized } = req.query;
+  if (optimized) console.log(optimized);
 
-  const QUERY = `
-  SELECT a.account_id, COUNT(l.status) AS "Contract Count"
+  const QUERY =
+    optimized == true
+      ? `
+  SELECT a.account_id, a.frequency, COUNT(l.status) AS "Contract Count"
+  FROM financial.loan as l
+  INNER JOIN financial.account as a
+  ON l.account_id = a.account_id
+  ${account_id ? '' : SQL_COMMENT}WHERE l.status =  ?
+  ${account_id ? '' : SQL_COMMENT}AND a.account_id = ?
+  GROUP BY a.account_id, a.frequency
+  `
+      : `
+  SELECT a.account_id, a.frequency, COUNT(l.status) AS "Contract Count"
   FROM financial.loan as l, financial.account as a
   WHERE l.account_id = a.account_id
   ${status ? '' : SQL_COMMENT}AND l.status = ?
-  GROUP BY a.account_id
+  GROUP BY a.account_id, a.frequency
   ${account_id ? '' : SQL_COMMENT}HAVING a.account_id = ?
   `;
 
