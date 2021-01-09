@@ -214,9 +214,27 @@ exports.getRegionTransactions = (req, res) => {
 // CARDS CONTROLLERS -----------------------------------------
 
 exports.getIssuance = (req, res) => {
-  let { type, threshold } = req.query;
+  let { type, threshold, optimized } = req.query;
 
-  const QUERY = `
+  const QUERY =
+    optimized == 'true'
+      ? `
+  SELECT A3 as "Region Name", COUNT(a.account_id) as "Account Count"
+  FROM 	(
+    SELECT card_id, disp_id
+    FROM financial.card
+    ${type ? '' : SQL_COMMENT}WHERE type = ?
+  ) as c
+  INNER JOIN financial.disp as d1
+  ON c.disp_id = d1.disp_id
+  INNER JOIN financial.account as a
+  ON d1.account_id = a.account_id
+  INNER JOIN financial.district as d2
+  ON a.district_id = d2.district_id
+  GROUP BY A3
+  ${threshold ? '' : SQL_COMMENT}HAVING COUNT(a.account_id) >= ?
+  `
+      : `
   SELECT A3 as "Region Name", COUNT(a.account_id) as "Account Count"
   FROM financial.card as c
   INNER JOIN financial.disp as d1
