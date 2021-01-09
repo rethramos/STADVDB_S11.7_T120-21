@@ -37,7 +37,19 @@ const loanCountTable = createTable(`#${loanCountContainer.id}`, {
 
 loanCountTable.setData('/api/loan-count', { status: statusSelect.value });
 
+let optimized = document.getElementById('optimized');
+
 statusSelect.onchange = e => {
   const status = statusSelect.value;
-  loanCountTable.setData(loanCountTable.getAjaxUrl(), { status });
+  loanCountTable.setData(loanCountTable.getAjaxUrl(), {
+    status,
+    optimized: optimized.checked,
+  });
+};
+
+optimized.onclick = e => {
+  loanCountTable.setData(loanCountTable.getAjaxUrl(), {
+    status: statusSelect.value,
+    optimized: optimized.checked,
+  });
 };

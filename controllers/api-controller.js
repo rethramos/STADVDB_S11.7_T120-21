@@ -108,7 +108,6 @@ exports.getContractStatus = (req, res) => {
 
 exports.getAccountDistrict = (req, res) => {
   let { account_id, optimized } = req.query;
-  if (optimized) console.log(optimized);
 
   const QUERY =
     optimized == true
@@ -141,9 +140,21 @@ exports.getAccountDistrict = (req, res) => {
 // LOANS CONTROLLERS -----------------------------------------
 
 exports.getLoanCount = (req, res) => {
-  let status = req.query.status;
-
-  const QUERY = `
+  let { status, optimized } = req.query;
+  console.log(optimized)
+  const QUERY =
+    optimized == 'true'
+      ? `
+  SELECT A3 as "Region Name", COUNT(l.loan_id) AS "Loan Count"
+  FROM (
+    SELECT *
+    FROM financial.loan
+    ${status ? '' : SQL_COMMENT}WHERE status = ?
+  ) as l, financial.account as a, financial.district as d
+  WHERE l.account_id = a.account_id AND d.district_id = a.district_id
+  GROUP BY A3
+  `
+      : `
   SELECT A3 as "Region Name", COUNT(l.loan_id) AS "Loan Count"
   FROM financial.loan as l, financial.account as a, financial.district as d
   WHERE l.account_id = a.account_id AND d.district_id = a.district_id
@@ -151,6 +162,7 @@ exports.getLoanCount = (req, res) => {
   GROUP BY A3
   `;
 
+  console.log(QUERY);
   timer.start();
   pool.query(QUERY, [status], (err, results, fields) => {
     timer.end();
