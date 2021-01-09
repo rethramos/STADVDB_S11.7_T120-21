@@ -46,8 +46,9 @@ accountDistrictTable.setData('/api/account-district', {
 
 document.getElementById('form-fnd-account-district').onsubmit = e => {
   e.preventDefault();
-
+  let optimized = document.getElementById('optimized')
   accountDistrictTable.setData(accountDistrictTable.getAjaxUrl(), {
     account_id: accountIDInput.value,
+    optimized: optimized.checked
   });
 };

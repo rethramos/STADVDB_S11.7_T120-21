@@ -42,6 +42,8 @@ issuanceTable.setData('/api/issuance', {
   threshold: thresholdInput.value,
 });
 
+let optimized = document.getElementById('optimized');
+
 ctypeSelect.onchange = e => {
   const type = ctypeSelect.value;
   const threshold = thresholdInput.value;
@@ -49,6 +51,7 @@ ctypeSelect.onchange = e => {
   issuanceTable.setData(issuanceTable.getAjaxUrl(), {
     type,
     threshold,
+    optimized: optimized.checked,
   });
 };
 
@@ -59,5 +62,14 @@ thresholdInput.onchange = e => {
   issuanceTable.setData(issuanceTable.getAjaxUrl(), {
     type,
     threshold,
+    optimized: optimized.checked,
+  });
+};
+
+optimized.onclick = e => {
+  issuanceTable.setData(issuanceTable.getAjaxUrl(), {
+    type: ctypeSelect.value,
+    threshold: thresholdInput.value,
+    optimized: optimized.checked,
   });
 };

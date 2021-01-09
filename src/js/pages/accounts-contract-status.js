@@ -14,7 +14,7 @@ const contractStatusTable = createTable(`#${contractStatusContainer.id}`, {
   pagination: 'local',
   paginationSize: 10,
   ajaxRequesting: (url, params) => {
-    queryTimeText.classList.add('d-none')
+    queryTimeText.classList.add('d-none');
     progressText.innerHTML = 'Loading...';
   },
   ajaxResponse: (url, params, response) => {
@@ -50,10 +50,12 @@ contractStatusTable.setData('/api/contract-status', {
 contractStatusForm.onchange = e => {
   let account_id = accountIDInput.value;
   let status = statusSelect.value;
+  let optimized = document.getElementById('optimized');
 
   contractStatusTable.setData(contractStatusTable.getAjaxUrl(), {
     account_id,
     status,
+    optimized: optimized.checked,
   });
 };
 

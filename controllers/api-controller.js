@@ -74,14 +74,25 @@ exports.getCommittedCrimes = (req, res) => {
 // ACCOUNTS CONTROLLERS -----------------------------------------
 
 exports.getContractStatus = (req, res) => {
-  let { account_id, status } = req.query;
+  let { account_id, status, optimized } = req.query;
 
-  const QUERY = `
-  SELECT a.account_id, COUNT(l.status) AS "Contract Count"
+  const QUERY =
+    optimized == 'true'
+      ? `
+  SELECT a.account_id, a.frequency, COUNT(l.status) AS "Contract Count"
+  FROM financial.loan as l
+  INNER JOIN financial.account as a
+  ON l.account_id = a.account_id
+  ${account_id ? '' : SQL_COMMENT}WHERE l.status =  ?
+  ${account_id ? '' : SQL_COMMENT}AND a.account_id = ?
+  GROUP BY a.account_id, a.frequency
+  `
+      : `
+  SELECT a.account_id, a.frequency, COUNT(l.status) AS "Contract Count"
   FROM financial.loan as l, financial.account as a
   WHERE l.account_id = a.account_id
   ${status ? '' : SQL_COMMENT}AND l.status = ?
-  GROUP BY a.account_id
+  GROUP BY a.account_id, a.frequency
   ${account_id ? '' : SQL_COMMENT}HAVING a.account_id = ?
   `;
 
@@ -96,9 +107,21 @@ exports.getContractStatus = (req, res) => {
 };
 
 exports.getAccountDistrict = (req, res) => {
-  let account_id = req.query.account_id;
+  let { account_id, optimized } = req.query;
 
-  const QUERY = `
+  const QUERY =
+    optimized == 'true'
+      ? `
+  SELECT a.account_id, A2 as "District name"
+  FROM (
+    SELECT account_id, district_id 
+    FROM financial.account 
+    ${account_id ? '' : SQL_COMMENT}WHERE account_id = ?
+  ) as a
+  INNER JOIN financial.district as d
+  ON d.district_id = a.district_id
+  `
+      : `
   SELECT a.account_id, A2 as "District name"
   FROM district as d
   INNER JOIN account as a
@@ -119,9 +142,21 @@ exports.getAccountDistrict = (req, res) => {
 // LOANS CONTROLLERS -----------------------------------------
 
 exports.getLoanCount = (req, res) => {
-  let status = req.query.status;
+  let { status, optimized } = req.query;
 
-  const QUERY = `
+  const QUERY =
+    optimized == 'true'
+      ? `
+  SELECT A3 as "Region Name", COUNT(l.loan_id) AS "Loan Count"
+  FROM (
+    SELECT *
+    FROM financial.loan
+    ${status ? '' : SQL_COMMENT}WHERE status = ?
+  ) as l, financial.account as a, financial.district as d
+  WHERE l.account_id = a.account_id AND d.district_id = a.district_id
+  GROUP BY A3
+  `
+      : `
   SELECT A3 as "Region Name", COUNT(l.loan_id) AS "Loan Count"
   FROM financial.loan as l, financial.account as a, financial.district as d
   WHERE l.account_id = a.account_id AND d.district_id = a.district_id
@@ -142,9 +177,22 @@ exports.getLoanCount = (req, res) => {
 // TRANSACTIONS CONTROLLERS -----------------------------------------
 
 exports.getRegionTransactions = (req, res) => {
-  let k_symbol = req.query.k_symbol;
+  let { k_symbol, optimized } = req.query;
 
-  const QUERY = `
+  const QUERY =
+    optimized == 'true'
+      ? `
+  SELECT A3 AS "Region Name", COUNT(t.trans_id) AS "Transaction Count", SUM(amount) AS "Total Amount"
+  FROM (
+    SELECT *
+    FROM financial.trans
+    ${k_symbol ? '' : SQL_COMMENT}WHERE k_symbol = ?
+  ) as t, financial.account as a, financial.district as d
+  WHERE t.account_id = a.account_id AND a.district_id = d.district_id
+  GROUP BY A3
+  ORDER BY COUNT(t.trans_id)
+  `
+      : `
   SELECT A3 AS "Region Name", COUNT(t.trans_id) AS "Transaction Count", SUM(amount) AS "Total Amount"
   FROM financial.trans as t, financial.account as a, financial.district as d
   WHERE t.account_id = a.account_id AND a.district_id = d.district_id
@@ -166,9 +214,27 @@ exports.getRegionTransactions = (req, res) => {
 // CARDS CONTROLLERS -----------------------------------------
 
 exports.getIssuance = (req, res) => {
-  let { type, threshold } = req.query;
+  let { type, threshold, optimized } = req.query;
 
-  const QUERY = `
+  const QUERY =
+    optimized == 'true'
+      ? `
+  SELECT A3 as "Region Name", COUNT(a.account_id) as "Account Count"
+  FROM 	(
+    SELECT card_id, disp_id
+    FROM financial.card
+    ${type ? '' : SQL_COMMENT}WHERE type = ?
+  ) as c
+  INNER JOIN financial.disp as d1
+  ON c.disp_id = d1.disp_id
+  INNER JOIN financial.account as a
+  ON d1.account_id = a.account_id
+  INNER JOIN financial.district as d2
+  ON a.district_id = d2.district_id
+  GROUP BY A3
+  ${threshold ? '' : SQL_COMMENT}HAVING COUNT(a.account_id) >= ?
+  `
+      : `
   SELECT A3 as "Region Name", COUNT(a.account_id) as "Account Count"
   FROM financial.card as c
   INNER JOIN financial.disp as d1

@@ -45,8 +45,18 @@ regionTransactionsTable.setData('/api/region-transactions', {
   k_symbol: ttypeSelect.value,
 });
 
+let optimized = document.getElementById('optimized');
+
 ttypeSelect.onchange = e => {
   regionTransactionsTable.setData(regionTransactionsTable.getAjaxUrl(), {
     k_symbol: ttypeSelect.value,
+    optimized: optimized.checked,
+  });
+};
+
+optimized.onclick = e => {
+  regionTransactionsTable.setData(regionTransactionsTable.getAjaxUrl(), {
+    k_symbol: ttypeSelect.value,
+    optimized: optimized.checked,
   });
 };
