@@ -75,7 +75,6 @@ exports.getCommittedCrimes = (req, res) => {
 
 exports.getContractStatus = (req, res) => {
   let { account_id, status, optimized } = req.query;
-  if (optimized) console.log(optimized);
 
   const QUERY =
     optimized == true
@@ -108,9 +107,20 @@ exports.getContractStatus = (req, res) => {
 };
 
 exports.getAccountDistrict = (req, res) => {
-  let account_id = req.query.account_id;
+  let { account_id, optimized } = req.query;
+  if (optimized) console.log(optimized);
 
-  const QUERY = `
+  const QUERY =
+    optimized == true
+      ? `
+  SELECT a.account_id, A2 as "District name"
+  FROM (SELECT district_id 
+  FROM financial.account 
+  WHERE account_id = <user-input>) as a
+  INNER JOIN financial.district as d
+  ON d.district_id = a.district_id
+  `
+      : `
   SELECT a.account_id, A2 as "District name"
   FROM district as d
   INNER JOIN account as a
