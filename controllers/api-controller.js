@@ -116,7 +116,7 @@ exports.getAccountDistrict = (req, res) => {
   FROM (
     SELECT account_id, district_id 
     FROM financial.account 
-    ${account_id ? '':SQL_COMMENT}WHERE account_id = ?
+    ${account_id ? '' : SQL_COMMENT}WHERE account_id = ?
   ) as a
   INNER JOIN financial.district as d
   ON d.district_id = a.district_id
@@ -143,7 +143,7 @@ exports.getAccountDistrict = (req, res) => {
 
 exports.getLoanCount = (req, res) => {
   let { status, optimized } = req.query;
-  console.log(optimized)
+
   const QUERY =
     optimized == 'true'
       ? `
@@ -164,7 +164,6 @@ exports.getLoanCount = (req, res) => {
   GROUP BY A3
   `;
 
-  console.log(QUERY);
   timer.start();
   pool.query(QUERY, [status], (err, results, fields) => {
     timer.end();
@@ -178,9 +177,22 @@ exports.getLoanCount = (req, res) => {
 // TRANSACTIONS CONTROLLERS -----------------------------------------
 
 exports.getRegionTransactions = (req, res) => {
-  let k_symbol = req.query.k_symbol;
+  let { k_symbol, optimized } = req.query;
 
-  const QUERY = `
+  const QUERY =
+    optimized == 'true'
+      ? `
+  SELECT A3 AS "Region Name", COUNT(t.trans_id) AS "Transaction Count", SUM(amount) AS "Total Amount"
+  FROM (
+    SELECT *
+    FROM financial.trans
+    ${k_symbol ? '' : SQL_COMMENT}WHERE k_symbol = ?
+  ) as t, financial.account as a, financial.district as d
+  WHERE t.account_id = a.account_id AND a.district_id = d.district_id
+  GROUP BY A3
+  ORDER BY COUNT(t.trans_id)
+  `
+      : `
   SELECT A3 AS "Region Name", COUNT(t.trans_id) AS "Transaction Count", SUM(amount) AS "Total Amount"
   FROM financial.trans as t, financial.account as a, financial.district as d
   WHERE t.account_id = a.account_id AND a.district_id = d.district_id
