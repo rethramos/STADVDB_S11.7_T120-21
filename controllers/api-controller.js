@@ -77,7 +77,7 @@ exports.getContractStatus = (req, res) => {
   let { account_id, status, optimized } = req.query;
 
   const QUERY =
-    optimized == true
+    optimized == 'true'
       ? `
   SELECT a.account_id, a.frequency, COUNT(l.status) AS "Contract Count"
   FROM financial.loan as l
