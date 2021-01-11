@@ -1,0 +1,38 @@
++----------------------------------------------------------------------+
+
+// Average Unemployment Rate (1995-1996) of a given region
+
+// Original and Optimized (same query):
+
+SELECT A3 as Region, SUM(A12 + A13) / 2 as ‘Average Unemployment Rate’
+FROM financial.district
+WHERE A3 IN <user-input>
+GROUP BY Region
+
++----------------------------------------------------------------------+
+
++----------------------------------------------------------------------+
+
+// Average Salary Per Region
+
+// Original and Optimized (same query):
+
+SELECT A3 as Region, AVG (A11) as 'Average Salary'
+FROM financial.district
+WHERE A3 IN <user-input>
+GROUP BY Region
+
++----------------------------------------------------------------------+
+
++----------------------------------------------------------------------+
+
+// Average Committed Crimes (1995-1996) of a given district
+
+// Original and Optimized (same query):
+
+SELECT A2 as "District", SUM(A15 + A16)  / 2 as "Average Crime"
+FROM financial.district
+WHERE A2 IN <user-input>
+GROUP BY A2
+
++----------------------------------------------------------------------+

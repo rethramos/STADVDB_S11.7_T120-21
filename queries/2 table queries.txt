@@ -1,0 +1,48 @@
++----------------------------------------------------------------------+
+
+// Count of Specific Contract Status/es of the Selected Account
+
+// Original:
+
+SELECT a.account_id, a.frequency, COUNT(l.status) AS "Contract Count"
+FROM financial.loan as l, financial.account as a
+WHERE l.account_id = a.account_id AND l.status = <user-input>
+GROUP BY a.account_id, a.frequency
+HAVING a.account_id= <user-input>
+
+// Optimized:
+
+SELECT a.account_id, a.frequency, COUNT(l.status) AS "Contract Count"
+FROM financial.loan as l
+INNER JOIN financial.account as a
+ON l.account_id = a.account_id
+WHERE l.status =  <user-input>
+AND a.account_id = <user-input>
+GROUP BY a.account_id, a.frequency
+
++----------------------------------------------------------------------+
+
++----------------------------------------------------------------------+
+
+// Account User’s District Name
+
+// Original:
+
+SELECT a.account_id, A2 as "District name"
+FROM financial.district as d
+INNER JOIN financial.account as a
+ON d.district_id = a.district_id
+WHERE account_id = <user-input>
+
+// Optimized:
+
+SELECT a.account_id, A2 as "District name"
+FROM (
+  SELECT account_id, district_id
+  FROM financial.account
+  WHERE account_id = <user-input>
+) as a
+INNER JOIN financial.district as d
+ON d.district_id = a.district_id
+
++----------------------------------------------------------------------+

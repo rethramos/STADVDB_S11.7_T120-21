@@ -1,0 +1,53 @@
++----------------------------------------------------------------------+
+
+// Number of Loans per Region
+
+// Original:
+
+SELECT A3 as "Region Name", COUNT(l.loan_id) AS "Loan Count"
+FROM financial.loan as l, financial.account as a, financial.district as d
+WHERE l.account_id = a.account_id AND d.district_id = a.district_id
+AND l.status = <user-input>
+GROUP BY A3
+
+// Optimized:
+
+SELECT A3 as "Region Name", COUNT(l.loan_id) AS "Loan Count"
+FROM (
+  SELECT *
+  FROM financial.loan
+  WHERE status = <user-input>
+) as l, financial.account as a, financial.district as d
+WHERE l.account_id = a.account_id AND d.district_id = a.district_id
+GROUP BY A3
+
++----------------------------------------------------------------------+
+
++----------------------------------------------------------------------+
+
+// Count and Total Amount of Transactions Per Region
+
+// Original:
+
+SELECT A3 AS "Region Name", COUNT(t.trans_id) AS "Transaction Count",
+SUM(amount) AS "Total Amount"
+FROM financial.trans as t, financial.account as a, financial.district as d
+WHERE t.account_id = a.account_id AND a.district_id = d.district_id
+AND t.k_symbol = <user-input>
+GROUP BY A3
+ORDER BY COUNT(t.trans_id)
+
+// Optimized:
+
+SELECT A3 AS "Region Name", COUNT(t.trans_id) AS "Transaction Count",
+SUM(amount) AS "Total Amount"
+FROM (
+  SELECT *
+  FROM financial.trans
+  WHERE k_symbol = <user-input>
+) as t, financial.account as a, financial.district as d
+WHERE t.account_id = a.account_id AND a.district_id = d.district_id
+GROUP BY A3
+ORDER BY COUNT(t.trans_id)
+
++----------------------------------------------------------------------+
