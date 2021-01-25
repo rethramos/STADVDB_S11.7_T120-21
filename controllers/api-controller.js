@@ -12,7 +12,7 @@ exports.getUnemploymentRate = (req, res) => {
 
   const QUERY = `
   SELECT A3 as Region, SUM(A12 + A13) / 2 as 'Average Unemployment Rate'
-  FROM district
+  FROM financial.district
   ${region ? '' : SQL_COMMENT}WHERE A3 IN (?)
   GROUP BY Region
   `;
@@ -34,7 +34,7 @@ exports.getSalary = (req, res) => {
 
   const QUERY = `
   SELECT A3 as Region, AVG (A11) as 'Average Salary'
-  FROM district
+  FROM financial.district
   ${region ? '' : SQL_COMMENT}WHERE A3 IN (?)
   GROUP BY Region
   `;
@@ -56,7 +56,7 @@ exports.getCommittedCrimes = (req, res) => {
 
   const QUERY = `
   SELECT A2 as "District", SUM(A15 + A16)  / 2 as "Average Crime"
-  FROM district
+  FROM financial.district
   ${district ? '' : SQL_COMMENT}WHERE A2 IN (?)
   GROUP BY A2
   `;
@@ -123,8 +123,8 @@ exports.getAccountDistrict = (req, res) => {
   `
       : `
   SELECT a.account_id, A2 as "District name"
-  FROM district as d
-  INNER JOIN account as a
+  FROM financial.district as d
+  INNER JOIN financial.account as a
   ON d.district_id = a.district_id
   ${account_id ? '' : SQL_COMMENT}WHERE account_id = ?
   `;
@@ -263,12 +263,12 @@ exports.getIssuance = (req, res) => {
 exports.getDistrictNames = (req, res) => {
   const QUERY = `
   SELECT A2
-  FROM district
+  FROM financial.district
   ORDER BY A2
   `;
 
   pool.query(QUERY, [], (err, results, fields) => {
-    if (err) throw err;
+    if (err) console.log(err);
     res.send(results.map(result => result.A2));
   });
 };
