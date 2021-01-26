@@ -258,6 +258,29 @@ exports.getIssuance = (req, res) => {
   });
 };
 
+// ANALYTICS (OLAP) CONTROLLERS -----------------------------------------
+exports.getTransactionsPerQuarter = (req, res) => {
+  const quarter = req.query.quarter || 'Q1';
+  console.log(quarter)
+  const QUERY = `SELECT quarter 'Quarter', districtName 'District', englishName 'Transaction type', SUM(transactionAmount) 'Transaction amount'
+  FROM financial2.finances f
+  INNER JOIN financial2.date d
+  ON f.dateid = d.id
+  INNER JOIN financial2.district di
+  ON f.districtId = di.id
+  INNER JOIN financial2.transactionType t
+  ON f.transactionTypeId = t.id
+  WHERE quarter = ?
+  GROUP BY quarter, districtName, englishName
+  ORDER BY quarter, districtName, englishName;
+  `;
+
+  pool.query(QUERY, [quarter], (err, results, fields) => {
+    if (err) console.log(err);
+    res.send(results);
+  });
+};
+
 // HELPER CONTROLLERS -----------------------------------------
 
 exports.getDistrictNames = (req, res) => {

@@ -10,6 +10,7 @@ module.exports = {
     'loans-loan-count': `./src/js/pages/loans-loan-count.js`,
     'transactions-region-transactions': `./src/js/pages/transactions-region-transactions`,
     'cards-issuance': `./src/js/pages/cards-issuance.js`,
+    'analytics-transactions-per-quarter': `./src/js/pages/analytics-transactions-per-quarter.js`,
   },
   output: {
     filename: '[name].bundle.js',
