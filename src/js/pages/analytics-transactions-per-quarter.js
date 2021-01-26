@@ -1,48 +1,120 @@
 import axios from 'axios';
 import { Chart } from 'chart.js';
 
+const sliceForm = document.getElementById('form-slice');
+const quarterSelect = document.getElementById('quarter');
+const quarterText = document.getElementById('quarter-text');
+const statusText = document.getElementById('status-text');
+const ctx = document.getElementById('transactions-per-quarter');
+
+const myChart = new Chart(ctx, {
+  type: 'bar',
+  data: {},
+  options: {
+    scales: {
+      xAxes: [
+        {
+          stacked: true,
+          scaleLabel: { display: true, labelString: 'District' },
+        },
+      ],
+      yAxes: [
+        {
+          stacked: true,
+          scaleLabel: { display: true, labelString: 'Total Transactions' },
+        },
+      ],
+    },
+  },
+});
+
+let finished;
+setFinished(false);
+
 axios
   .get(`/api/transactions-per-quarter`)
   .then(response => {
-    // console.log(response.data);
     const res = response.data;
-    const colors = ['rgba(17, 69, 126, 0.5)', 'rgba(255, 193, 7, 0.5)'];
-    const data = {
-      labels: Array.from(new Set(res.map(d => d['District']))),
-      datasets: Array.from(new Set(res.map(d => d['Transaction type']))).map(
-        (transType, i) => {
-          return {
-            label: transType,
-            data: res
-              .filter(d => d['Transaction type'] === transType)
-              .map(d => d['Transaction amount']),
-            backgroundColor: colors[i],
-          };
-        },
-      ),
-    };
+    quarterText.innerHTML = res[0]['Quarter'];
+    updateData(myChart, res);
 
-    const ctx = document.getElementById('transactions-per-quarter');
-
-    const myChart = new Chart(ctx, {
-      type: 'bar',
-      data: data,
-      options: {
-        scales: {
-          xAxes: [{ stacked: true }],
-          yAxes: [{ stacked: true }],
-        },
-      },
-    });
-    // myChart.data = data;
-    // myChart.update();
-    // console.log(myChart.data);
-    // console.log(data);
+    setFinished(true);
   })
-  .catch(err => console.log(err));
+  .catch(err => {
+    console.log(err);
+    setFinished(false);
+    statusText.innerText = err;
+  });
 
+sliceForm.onsubmit = e => {
+  e.preventDefault();
+};
+
+sliceForm.onchange = e => {
+  setFinished(false);
+  handleSliceForm({ quarter: quarterSelect.value });
+};
+
+/**
+ * Iterates over each object in `data` to look for all unique values of `property`.
+ * @param data an array of objects with the same properties
+ * @param property the property in the objects of `data` which will be looked up
+ * @returns an array of unique values derived from all the values of `property`
+ */
+function getUniqueValues(data, property) {
+  return Array.from(new Set(data.map(d => d[property])));
+}
 
 function updateData(chart, data) {
-  chart.data = data;
+  const update = {
+    labels: getUniqueValues(data, 'District'),
+    datasets: getUniqueValues(data, 'Transaction type').map(transType => {
+      return {
+        label: transType,
+        data: data
+          .filter(d => d['Transaction type'] === transType)
+          .map(d => d['Transaction amount']),
+        backgroundColor: `rgba(${random(256)}, ${random(256)}, ${random(
+          256,
+        )}, 0.5)`,
+      };
+    }),
+  };
+
+  chart.data = update;
   chart.update();
+}
+
+/**
+ * Returns a random value between 0 (inclusive) to `high` (exclusive)
+ * @param high The maximum value to be obtained, exclusive
+ * @returns The random value
+ */
+function random(high) {
+  return Math.floor(Math.random() * (high + 1));
+}
+
+function setFinished(boolean) {
+  finished = boolean;
+  statusText.classList.toggle('d-none', finished); // hide the status text if rendering is finished
+  ctx.classList.toggle('d-none', !finished); // hide the chart if rendering is not finished
+}
+
+function handleSliceForm(queryParams) {
+  axios
+    .get(`/api/transactions-per-quarter`, {
+      params: queryParams,
+    })
+    .then(response => {
+      const res = response.data;
+      quarterText.innerHTML = res[0]['Quarter'];
+      updateData(myChart, res);
+
+      setFinished(true);
+    })
+    .catch(err => {
+      console.log(err);
+      setFinished(false);
+      statusText.innerText = err;
+    });
 }
