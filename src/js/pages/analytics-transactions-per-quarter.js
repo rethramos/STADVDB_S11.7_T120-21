@@ -11,6 +11,7 @@ const myChart = new Chart(ctx, {
   type: 'bar',
   data: {},
   options: {
+    tooltips: {},
     scales: {
       xAxes: [
         {
@@ -74,20 +75,41 @@ function updateData(chart, data) {
         data: data
           .filter(d => d['Transaction type'] === transType)
           .map(d => d['Transaction amount']),
-        backgroundColor: `rgba(${random(256)}, ${random(256)}, ${random(
-          256,
+        backgroundColor: `rgba(${random(255)}, ${random(255)}, ${random(
+          255,
         )}, 0.5)`,
       };
     }),
   };
 
+  const averages = data.map(d => d['Average Transaction']);
+  const counts = data.map(d => d['Transaction Count']);
+  const tooltipUpdate = {
+    callbacks: {
+      label: (tooltipItem, chartData) => {
+        console.log(tooltipItem, chartData);
+        return `Total: ${tooltipItem.value} | Average: ${
+          averages[
+            tooltipItem.index * chartData.datasets.length +
+              tooltipItem.datasetIndex
+          ]
+        } | Count: ${
+          counts[
+            tooltipItem.index * chartData.datasets.length +
+              tooltipItem.datasetIndex
+          ]
+        }`;
+      },
+    },
+  };
   chart.data = update;
+  chart.options.tooltips = tooltipUpdate;
   chart.update();
 }
 
 /**
- * Returns a random value between 0 (inclusive) to `high` (exclusive)
- * @param high The maximum value to be obtained, exclusive
+ * Returns a random value between 0 to `high` (inclusive)
+ * @param high The maximum value to be obtained, inclusive
  * @returns The random value
  */
 function random(high) {

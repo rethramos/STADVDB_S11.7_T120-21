@@ -261,8 +261,12 @@ exports.getIssuance = (req, res) => {
 // ANALYTICS (OLAP) CONTROLLERS -----------------------------------------
 exports.getTransactionsPerQuarter = (req, res) => {
   const quarter = req.query.quarter || 'Q1';
-  console.log(quarter)
-  const QUERY = `SELECT quarter 'Quarter', districtName 'District', englishName 'Transaction type', SUM(transactionAmount) 'Transaction amount'
+  console.log(quarter);
+  const QUERY = `SELECT quarter 'Quarter', districtName 'District', englishName 'Transaction type',
+  SUM(transactionQuantity) "Transaction Count",
+  SUM(transactionAmount) 'Transaction amount',
+  AVG(transactionAverage) "Average Transaction"
+  
   FROM financial2.finances f
   INNER JOIN financial2.date d
   ON f.dateid = d.id
