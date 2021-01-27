@@ -1,0 +1,36 @@
+<h1>{{title}}</h1>
+<br>
+
+<h2>Yearly Transactions</h2>
+<br>
+
+<h3 class="text-center" id="yearly-status-text">Loading...</h3>
+<canvas id="year-drilldown" class="d-none"></canvas>
+<br>
+
+<h2>Quarterly Transactions <span id="quarterly-text"></span></h2>
+<br>
+
+<form class="form-inline" id="form-drilldown-quarterly">
+  <label for="quarterly-year" class="mr-md-2">Year</label>
+  <select class="form-control mb-2 mb-md-0 mr-md-2" id="quarterly-year" name="year" disabled>
+  </select>
+</form>
+<br>
+
+<h3 class="text-center" id="quarterly-status-text">Loading...</h3>
+<canvas id="quarter-drilldown" class="d-none"></canvas>
+
+
+<script>
+  function generateYearOptions(selectElement, min, max) {
+    var yearSelect = selectElement;
+    for (i = min; i < max; i++) {
+      yearSelect.innerHTML += `<option value="${i}">${i}</option>`
+    }
+  }
+
+  generateYearOptions(document.getElementById('quarterly-year'), 1993, 1999);
+</script>
+<script src="/js/commons.bundle.js"></script>
+<script src="/js/analytics-date-drilldown.bundle.js"></script>

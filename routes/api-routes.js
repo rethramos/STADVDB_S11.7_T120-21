@@ -41,6 +41,7 @@ router.get('/issuance', getIssuance);
 
 // ANALYTICS (OLAP) ROUTES -----------------------------------------
 router.get('/date-rollup', getDateRollup);
+router.get('/date-drilldown', getDateRollup);
 router.get('/transactions-per-quarter', getTransactionsPerQuarter);
 router.get('/transactions-per-multiple-quarters-per-district', getTransactionsPerQuartersAndDistrict);
 
