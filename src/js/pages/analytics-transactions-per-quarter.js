@@ -67,17 +67,22 @@ function getUniqueValues(data, property) {
 }
 
 function updateData(chart, data) {
+  const [r, g, b] = [17, 69, 126];
+  const [rC, gC, bC] = [255 - r, 255 - g, 255 - b];
+  const colors = [
+    `rgba(${r}, ${g}, ${b}, 0.5)`,
+    `rgba(${rC}, ${gC}, ${bC}, 0.5)`,
+  ];
+
   const update = {
     labels: getUniqueValues(data, 'District'),
-    datasets: getUniqueValues(data, 'Transaction type').map(transType => {
+    datasets: getUniqueValues(data, 'Transaction type').map((transType, i) => {
       return {
         label: transType,
         data: data
           .filter(d => d['Transaction type'] === transType)
           .map(d => d['Transaction amount']),
-        backgroundColor: `rgba(${random(255)}, ${random(255)}, ${random(
-          255,
-        )}, 0.5)`,
+        backgroundColor: colors[i],
       };
     }),
   };
@@ -87,7 +92,6 @@ function updateData(chart, data) {
   const tooltipUpdate = {
     callbacks: {
       label: (tooltipItem, chartData) => {
-        console.log(tooltipItem, chartData);
         return `Total: ${tooltipItem.value} | Average: ${
           averages[
             tooltipItem.index * chartData.datasets.length +

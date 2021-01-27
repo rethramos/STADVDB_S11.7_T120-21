@@ -259,6 +259,23 @@ exports.getIssuance = (req, res) => {
 };
 
 // ANALYTICS (OLAP) CONTROLLERS -----------------------------------------
+exports.getDateRollup = (req, res) => {
+  const QUERY = `SELECT year 'Year', quarter 'Quarter', MONTHNAME(STR_TO_DATE(month, '%m')) 'Month', day 'Day',
+  SUM(transactionQuantity) 'Transaction Quantity', SUM(transactionAmount) 'Total Transaction', AVG(transactionAverage) 'Average Transaction Amount'
+  FROM financial2.finances f
+  INNER JOIN financial2.district di
+  ON di.id = f.districtId
+  INNER JOIN financial2.date da
+  ON da.id = f.dateId
+  GROUP BY Year, Quarter, Month, Day WITH ROLLUP
+  `;
+
+  pool.query(QUERY, [], (err, results, fields) => {
+    if (err) console.log(err);
+    res.send(results);
+  });
+};
+
 exports.getTransactionsPerQuarter = (req, res) => {
   const quarter = req.query.quarter || 'Q1';
   console.log(quarter);

@@ -11,6 +11,9 @@ router.get('/transactions-per-quarter', (req, res) => {
   });
 });
 
+router.get('/date-rollup', (req, res) => {
+  res.render('analytics-date-rollup', { title: 'Transactions - Date Rollup' });
+});
 module.exports = app => {
   app.use('/analytics', router);
 };
