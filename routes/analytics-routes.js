@@ -11,13 +11,15 @@ router.get('/date-rollup', (req, res) => {
 
 router.get('/transactions-per-quarter', (req, res) => {
   res.render('analytics-slice', {
-    title: 'Transactions per quarter',
+    title: 'Transactions Per Quarter',
   });
 });
 
-// router.get('/transactions-per-quarter-and-district', (req, res) => {
-//   res.render('analytics-dice', {title: 'Transactions per quarter and district'});
-// });
+router.get('/transactions-per-multiple-quarters-per-district', (req, res) => {
+  res.render('analytics-dice', {
+    title: 'Transactions Per Multiple Quarters Per District',
+  });
+});
 
 module.exports = app => {
   app.use('/analytics', router);

@@ -302,6 +302,30 @@ exports.getTransactionsPerQuarter = (req, res) => {
   });
 };
 
+exports.getTransactionsPerQuartersAndDistrict = (req, res) => {
+  let { quarter, district } = req.query;
+  if (!quarter) quarter = ['Q1', 'Q2', 'Q3', 'Q4'];
+
+  const QUERY = `
+  SELECT quarter "Quarter", districtName "District Name",  englishName "Transaction Type",
+  SUM(transactionQuantity) "Transaction Count", SUM(transactionAmount) "Transaction Amount", AVG(transactionAverage) "Average Transaction"
+  FROM financial2.finances f
+  INNER JOIN financial2.date da
+  ON f.dateId = da.id
+  INNER JOIN financial2.district d
+  ON f.districtId = d.id
+  INNER JOIN financial2.transactiontype t
+  ON f.transactionTypeId = t.id
+  WHERE QUARTER IN (?) AND districtName = ?
+  GROUP BY quarter, districtName, englishName
+  ORDER BY quarter, districtName, englishName
+  `;
+
+  pool.query(QUERY, [quarter, district], (err, results, fields) => {
+    if (err) console.log(err);
+    res.send(results);
+  });
+};
 // HELPER CONTROLLERS -----------------------------------------
 
 exports.getDistrictNames = (req, res) => {
