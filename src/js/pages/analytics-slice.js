@@ -22,7 +22,7 @@ const myChart = new Chart(ctx, {
       yAxes: [
         {
           stacked: true,
-          scaleLabel: { display: true, labelString: 'Total Transactions' },
+          scaleLabel: { display: true, labelString: 'Total Transaction Amount' },
         },
       ],
     },

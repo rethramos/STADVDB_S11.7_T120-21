@@ -5,15 +5,20 @@ router.get('/', (req, res) => {
   res.send('test for OLAP');
 });
 
+router.get('/date-rollup', (req, res) => {
+  res.render('analytics-date-rollup', { title: 'Transactions - Date Rollup' });
+});
+
 router.get('/transactions-per-quarter', (req, res) => {
-  res.render('analytics-transactions-per-quarter', {
+  res.render('analytics-slice', {
     title: 'Transactions per quarter',
   });
 });
 
-router.get('/date-rollup', (req, res) => {
-  res.render('analytics-date-rollup', { title: 'Transactions - Date Rollup' });
-});
+// router.get('/transactions-per-quarter-and-district', (req, res) => {
+//   res.render('analytics-dice', {title: 'Transactions per quarter and district'});
+// });
+
 module.exports = app => {
   app.use('/analytics', router);
 };
