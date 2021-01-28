@@ -1,0 +1,41 @@
+<h1>{{title}}</h1>
+<br>
+
+<h3><span id="dice-text"></span> Transactions</h3>
+<br>
+
+<form class="form-inline" id="form-dice">
+  <span class="mr-md-2">Quarters</span>
+  <div class="form-check mb-2 mb-md-0 mr-md-2">
+    <input type="checkbox" checked class="form-check-input" id="Q1" value="Q1" name="quarter">
+    <label for="Q1">Q1</label>
+  </div>
+  <div class="form-check mb-2 mb-md-0 mr-md-2">
+    <input type="checkbox" checked class="form-check-input" id="Q2" value="Q2" name="quarter">
+    <label for="Q2">Q2</label>
+  </div>
+  <div class="form-check mb-2 mb-md-0 mr-md-2">
+    <input type="checkbox" checked class="form-check-input" id="Q3" value="Q3" name="quarter">
+    <label for="Q3">Q3</label>
+  </div>
+  <div class="form-check mb-2 mb-md-0 mr-md-2">
+    <input type="checkbox" checked class="form-check-input" id="Q4" value="Q4" name="quarter">
+    <label for="Q4">Q4</label>
+  </div>
+
+  <div class="form-group">
+    <label for="district" class="mr-md-2">District</label>
+    <div class="input-group">
+      <select class="form-control" id="district" name="district">
+        <option value="">Loading options...</option>
+      </select>
+    </div>
+  </div>
+</form>
+<br>
+
+<h3 class="text-center" id="status-text">Loading...</h3>
+<canvas id="transactions-dice"></canvas>
+
+<script src="/js/commons.bundle.js"></script>
+<script src="/js/analytics-dice.bundle.js"></script>

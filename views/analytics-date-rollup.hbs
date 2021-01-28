@@ -1,0 +1,58 @@
+<h1>{{title}}</h1>
+<br>
+
+<h2>Daily Transactions <span id="daily-text"></span></h2>
+<br>
+
+<form class="form-inline" id="form-rollup-daily">
+  <label for="daily-month" class="mr-md-2">Month</label>
+  <select class="form-control mb-2 mb-md-0 mr-md-2" id="daily-month" name="month">
+    <option value="January">January</option>
+    <option value="February">February</option>
+    <option value="March">March</option>
+    <option value="April">April</option>
+    <option value="May">May</option>
+    <option value="June">June</option>
+    <option value="July">July</option>
+    <option value="August">August</option>
+    <option value="September">September</option>
+    <option value="October">October</option>
+    <option value="November">November</option>
+    <option value="December">December</option>
+  </select>
+  <label for="daily-year" class="mr-md-2">Year</label>
+  <select class="form-control mb-2 mb-md-0 mr-md-2" id="daily-year" name="year">
+  </select>
+</form>
+<br>
+
+<h3 class="text-center" id="daily-status-text">Loading...</h3>
+<canvas id="date-rollup"></canvas>
+
+<br>
+<h2>Monthly Transactions <span id="monthly-text"></span></h2>
+<br>
+
+<form class="form-inline" id="form-rollup-monthly">
+  <label for="monthly-year" class="mr-md-2">Year</label>
+  <select class="form-control mb-2 mb-md-0 mr-md-2" id="monthly-year" name="year">
+  </select>
+</form>
+<br>
+
+<h3 class="text-center" id="monthly-status-text">Loading...</h3>
+<canvas id="month-rollup"></canvas>
+
+<script>
+  function generateYearOptions(selectElement, min, max) {
+    var yearSelect = selectElement;
+    for (i = min; i < max; i++) {
+      yearSelect.innerHTML += `<option value="${i}">${i}</option>`
+    }
+  }
+
+  generateYearOptions(document.getElementById('daily-year'), 1993, 1999);
+  generateYearOptions(document.getElementById('monthly-year'), 1993, 1999);
+</script>
+<script src="/js/commons.bundle.js"></script>
+<script src="/js/analytics-date-rollup.bundle.js"></script>

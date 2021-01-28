@@ -22,7 +22,10 @@
   },
   "homepage": "https://github.com/rethramos/STADVDB_S11.7_T120-21#readme",
   "dependencies": {
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
+    "chart.js": "^2.9.4",
+    "chartjs-scale-hierarchical": "^1.2.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-handlebars": "^5.2.0",

@@ -9,6 +9,9 @@ const {
   getRegionTransactions,
   getIssuance,
   getContractStatus,
+  getTransactionsPerQuarter,
+  getDateRollup,
+  getTransactionsPerQuartersAndDistrict,
 } = require('../controllers/api-controller');
 
 const router = express.Router();
@@ -35,6 +38,12 @@ router.get('/region-transactions', getRegionTransactions);
 // CARDS ROUTES -----------------------------------------
 
 router.get('/issuance', getIssuance);
+
+// ANALYTICS (OLAP) ROUTES -----------------------------------------
+router.get('/date-rollup', getDateRollup);
+router.get('/date-drilldown', getDateRollup);
+router.get('/transactions-per-quarter', getTransactionsPerQuarter);
+router.get('/transactions-per-multiple-quarters-per-district', getTransactionsPerQuartersAndDistrict);
 
 // HELPER ROUTES -----------------------------------------
 

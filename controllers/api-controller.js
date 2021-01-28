@@ -12,7 +12,7 @@ exports.getUnemploymentRate = (req, res) => {
 
   const QUERY = `
   SELECT A3 as Region, SUM(A12 + A13) / 2 as 'Average Unemployment Rate'
-  FROM district
+  FROM financial.district
   ${region ? '' : SQL_COMMENT}WHERE A3 IN (?)
   GROUP BY Region
   `;
@@ -34,7 +34,7 @@ exports.getSalary = (req, res) => {
 
   const QUERY = `
   SELECT A3 as Region, AVG (A11) as 'Average Salary'
-  FROM district
+  FROM financial.district
   ${region ? '' : SQL_COMMENT}WHERE A3 IN (?)
   GROUP BY Region
   `;
@@ -56,7 +56,7 @@ exports.getCommittedCrimes = (req, res) => {
 
   const QUERY = `
   SELECT A2 as "District", SUM(A15 + A16)  / 2 as "Average Crime"
-  FROM district
+  FROM financial.district
   ${district ? '' : SQL_COMMENT}WHERE A2 IN (?)
   GROUP BY A2
   `;
@@ -123,8 +123,8 @@ exports.getAccountDistrict = (req, res) => {
   `
       : `
   SELECT a.account_id, A2 as "District name"
-  FROM district as d
-  INNER JOIN account as a
+  FROM financial.district as d
+  INNER JOIN financial.account as a
   ON d.district_id = a.district_id
   ${account_id ? '' : SQL_COMMENT}WHERE account_id = ?
   `;
@@ -258,17 +258,84 @@ exports.getIssuance = (req, res) => {
   });
 };
 
+// ANALYTICS (OLAP) CONTROLLERS -----------------------------------------
+exports.getDateRollup = (req, res) => {
+  const QUERY = `SELECT year 'Year', quarter 'Quarter', MONTHNAME(STR_TO_DATE(month, '%m')) 'Month', day 'Day',
+  SUM(transactionQuantity) 'Transaction Quantity', SUM(transactionAmount) 'Total Transaction', AVG(transactionAverage) 'Average Transaction Amount'
+  FROM financial2.finances f
+  INNER JOIN financial2.district di
+  ON di.id = f.districtId
+  INNER JOIN financial2.date da
+  ON da.id = f.dateId
+  GROUP BY Year, Quarter, Month, Day WITH ROLLUP
+  `;
+
+  pool.query(QUERY, [], (err, results, fields) => {
+    if (err) console.log(err);
+    res.send(results);
+  });
+};
+
+exports.getTransactionsPerQuarter = (req, res) => {
+  const quarter = req.query.quarter || 'Q1';
+  const QUERY = `SELECT quarter 'Quarter', districtName 'District', englishName 'Transaction type',
+  SUM(transactionQuantity) "Transaction Count",
+  SUM(transactionAmount) 'Transaction amount',
+  AVG(transactionAverage) "Average Transaction"
+  
+  FROM financial2.finances f
+  INNER JOIN financial2.date d
+  ON f.dateid = d.id
+  INNER JOIN financial2.district di
+  ON f.districtId = di.id
+  INNER JOIN financial2.transactionType t
+  ON f.transactionTypeId = t.id
+  WHERE quarter = ?
+  GROUP BY quarter, districtName, englishName
+  ORDER BY quarter, districtName, englishName;
+  `;
+
+  pool.query(QUERY, [quarter], (err, results, fields) => {
+    if (err) console.log(err);
+    res.send(results);
+  });
+};
+
+exports.getTransactionsPerQuartersAndDistrict = (req, res) => {
+  let { quarter, district } = req.query;
+  if (!quarter) quarter = ['Q1', 'Q2', 'Q3', 'Q4'];
+
+  const QUERY = `
+  SELECT quarter "Quarter", districtName "District Name",  englishName "Transaction Type",
+  SUM(transactionQuantity) "Transaction Count", SUM(transactionAmount) "Transaction Amount", AVG(transactionAverage) "Average Transaction"
+  FROM financial2.finances f
+  INNER JOIN financial2.date da
+  ON f.dateId = da.id
+  INNER JOIN financial2.district d
+  ON f.districtId = d.id
+  INNER JOIN financial2.transactiontype t
+  ON f.transactionTypeId = t.id
+  WHERE QUARTER IN (?) AND districtName = ?
+  GROUP BY quarter, districtName, englishName
+  ORDER BY quarter, districtName, englishName
+  `;
+
+  pool.query(QUERY, [quarter, district], (err, results, fields) => {
+    if (err) console.log(err);
+    res.send(results);
+  });
+};
 // HELPER CONTROLLERS -----------------------------------------
 
 exports.getDistrictNames = (req, res) => {
   const QUERY = `
   SELECT A2
-  FROM district
+  FROM financial.district
   ORDER BY A2
   `;
 
   pool.query(QUERY, [], (err, results, fields) => {
-    if (err) throw err;
+    if (err) console.log(err);
     res.send(results.map(result => result.A2));
   });
 };

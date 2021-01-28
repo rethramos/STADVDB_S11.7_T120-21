@@ -6,4 +6,5 @@ module.exports = [
   'loans-routes',
   'transactions-routes',
   'cards-routes',
+  'analytics-routes',
 ];
