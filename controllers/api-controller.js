@@ -278,7 +278,6 @@ exports.getDateRollup = (req, res) => {
 
 exports.getTransactionsPerQuarter = (req, res) => {
   const quarter = req.query.quarter || 'Q1';
-  console.log(quarter);
   const QUERY = `SELECT quarter 'Quarter', districtName 'District', englishName 'Transaction type',
   SUM(transactionQuantity) "Transaction Count",
   SUM(transactionAmount) 'Transaction amount',
